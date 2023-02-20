@@ -16,10 +16,10 @@ class Bank
     }
 
 
-    public static function create(Currency $currency1, Currency $currency2, float $rate): Bank
+    public static function create(Currency $from, Currency $to, float $rate): Bank
     {
         $bank = new Bank([]);
-        $bank->addEchangeRate($currency1, $currency2, $rate);
+        $bank->addEchangeRate($from, $to, $rate);
 
         return $bank;
     }

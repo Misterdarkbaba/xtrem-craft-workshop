@@ -21,6 +21,6 @@ class MoneyTest extends TestCase
 
     public function test_divide_in_korean_won_returns_float()
     {
-        $this->assertEquals(MoneyCalculator::divide(4002,  4), 1000.5);
+        $this->assertEquals(1000.5, MoneyCalculator::divide(4002,  4));
     }
 }
