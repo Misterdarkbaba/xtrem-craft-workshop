@@ -18,3 +18,10 @@
 - Code lisible
 - Nommage selon l'Ubiquitous language
 - SOLID
+
+> Du code propre est du code :
+> - lisible
+> - élégant
+> - facile à modifier et comportant des tests
+> - écrit avec soin
+> - sans surprise
