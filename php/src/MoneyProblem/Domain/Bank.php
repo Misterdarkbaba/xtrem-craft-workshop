@@ -2,27 +2,21 @@
 
 namespace MoneyProblem\Domain;
 
+use MoneyProblem\Exception\MissingExchangeRateException;
 use function array_key_exists;
 
 class Bank
 {
-    private $exchangeRates = [];
+    private array $exchangeRates = [];
 
-    /**
-     * @param array $exchangeRates
-     */
+
     public function __construct(array $exchangeRates = [])
     {
         $this->exchangeRates = $exchangeRates;
     }
 
-    /**
-     * @param Currency $currency1
-     * @param Currency $currency2
-     * @param float $rate
-     * @return Bank
-     */
-    public static function create(Currency $currency1, Currency $currency2, float $rate)
+
+    public static function create(Currency $currency1, Currency $currency2, float $rate): Bank
     {
         $bank = new Bank([]);
         $bank->addEchangeRate($currency1, $currency2, $rate);
@@ -30,32 +24,28 @@ class Bank
         return $bank;
     }
 
-    /**
-     * @param Currency $currency1
-     * @param Currency $currency2
-     * @param float $rate
-     * @return void
-     */
-    public function addEchangeRate(Currency $currency1, Currency $currency2, float $rate): void
+
+    public function addEchangeRate(Currency $from, Currency $to, float $changeRate): void
     {
-        $this->exchangeRates[($currency1 . '->' . $currency2)] = $rate;
+        $this->exchangeRates[($from . '->' . $to)] = $changeRate;
     }
 
     /**
-     * @param float $amount
-     * @param Currency $currency1
-     * @param Currency $currency2
-     * @return float
      * @throws MissingExchangeRateException
      */
-    public function convert(float $amount, Currency $currency1, Currency $currency2): float
+    public function convert(float $amount, Currency $from, Currency $to): float
     {
-        if (!($currency1 == $currency2 || array_key_exists($currency1 . '->' . $currency2, $this->exchangeRates))) {
-            throw new MissingExchangeRateException($currency1, $currency2);
+        if (!$this->canConvert($from, $to)) {
+            throw new MissingExchangeRateException($from, $to);
         }
-        return $currency1 == $currency2
+
+        return $from == $to
             ? $amount
-            : $amount * $this->exchangeRates[($currency1 . '->' . $currency2)];
+            : $amount * $this->exchangeRates[($from . '->' . $to)];
     }
 
+    private function canConvert(Currency $from, Currency $to): bool
+    {
+        return $from == $to || array_key_exists($from . '->' . $to, $this->exchangeRates);
+    }
 }

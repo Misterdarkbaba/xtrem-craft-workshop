@@ -4,7 +4,7 @@ namespace Tests\MoneyProblem\Domain;
 
 use MoneyProblem\Domain\Bank;
 use MoneyProblem\Domain\Currency;
-use MoneyProblem\Domain\MissingExchangeRateException;
+use MoneyProblem\Exception\MissingExchangeRateException;
 use PHPUnit\Framework\TestCase;
 
 class BankTest extends TestCase
