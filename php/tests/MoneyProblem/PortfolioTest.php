@@ -44,4 +44,17 @@ class PortfolioTest extends TestCase
 //        // Assert
 //        $this->assertEquals(1.98, $evaluation);
     }
+
+    public function test_portfolio_empty_should_return_0(){
+        // Arrange
+        $portfolio = new Portfolio();
+
+        // Act
+        $bank = Bank::create(Currency::EUR(), Currency::USD(), 1.2);
+        $evaluation = $portfolio->evaluate(Currency::USD(), $bank);
+
+        // Assert
+        $this->assertEquals(0, $evaluation);
+    }
+
 }
