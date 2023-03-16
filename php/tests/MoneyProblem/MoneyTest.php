@@ -43,7 +43,7 @@ class MoneyTest extends TestCase
         $money = new Money(10, Currency::EUR());
 
         $this->expectException(\Exception::class);
-        $money->divide(-2);
+        $money->divide(-1);
     }
 
     public function test_divide_by_positive_number()
@@ -74,7 +74,13 @@ class MoneyTest extends TestCase
     public function test_negative_mount()
     {
         $this->expectException(\Exception::class);
-        
+
         $money = new Money(-5, Currency::EUR());
+    }
+
+    public function test_mount_equals_zero()
+    {
+        $money = new Money(0, Currency::EUR());
+        $this->assertTrue(true);
     }
 }

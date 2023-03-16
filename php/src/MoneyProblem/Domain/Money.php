@@ -2,29 +2,14 @@
 
 namespace MoneyProblem\Domain;
 
-use function Tests\Pitchart\Phlunit\Checks\throws;
-
 class Money
 {
     private Currency $currency;
-
-    /**
-     * @return Currency
-     */
-    public function getCurrency(): Currency
-    {
-        return $this->currency;
-    }
-
-    /**
-     * @param Currency $currency
-     */
-    public function setCurrency(Currency $currency): void
-    {
-        $this->currency = $currency;
-    }
     private int $mount;
 
+    /**
+     * @throws \Exception
+     */
     public function __construct(int $amount, Currency $currency)
     {
         if ($amount < 0) {
@@ -53,10 +38,10 @@ class Money
      */
     public function divide(int $divide): ?Money
     {
-        if ($divide === 0) {
-            throw new \DivisionByZeroError('Division par 0 impossible');
-        } else if ($divide < 0) {
+        if ($divide < 0) {
             throw new \Exception('Division par un nombre négatif impossible');
+        } else if ($divide === 0) {
+            throw new \DivisionByZeroError('Division par 0 impossible');
         }
         return new Money($this->mount / $divide, $this->currency);
     }
@@ -64,5 +49,15 @@ class Money
     public function getAmount(): float
     {
         return $this->mount;
+    }
+
+    public function getCurrency(): Currency
+    {
+        return $this->currency;
+    }
+
+    private function setCurrency(Currency $currency): void
+    {
+        $this->currency = $currency;
     }
 }
