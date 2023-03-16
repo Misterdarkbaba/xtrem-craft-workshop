@@ -35,6 +35,7 @@ class MoneyTest extends TestCase
         $money = new Money(10, Currency::EUR());
 
         $this->expectException(\DivisionByZeroError::class);
+        $this->expectExceptionMessage('Division par 0 impossible');
         $money->divide(0);
     }
 
@@ -43,6 +44,7 @@ class MoneyTest extends TestCase
         $money = new Money(10, Currency::EUR());
 
         $this->expectException(\Exception::class);
+        $this->expectExceptionMessage('Division par un nombre négatif impossible');
         $money->divide(-1);
     }
 

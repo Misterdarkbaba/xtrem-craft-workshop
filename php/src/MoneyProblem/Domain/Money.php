@@ -40,7 +40,8 @@ class Money
     {
         if ($divide < 0) {
             throw new \Exception('Division par un nombre négatif impossible');
-        } else if ($divide === 0) {
+        }
+        if ($divide === 0) {
             throw new \DivisionByZeroError('Division par 0 impossible');
         }
         return new Money($this->mount / $divide, $this->currency);
@@ -54,10 +55,5 @@ class Money
     public function getCurrency(): Currency
     {
         return $this->currency;
-    }
-
-    private function setCurrency(Currency $currency): void
-    {
-        $this->currency = $currency;
     }
 }

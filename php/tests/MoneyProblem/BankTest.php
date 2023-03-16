@@ -25,7 +25,7 @@ class BankTest extends TestCase
         $convertedAmount = $this->bank->convert(new Money(10, Currency::EUR()), Currency::USD());
 
         // Assert
-        $this->assertEquals(12, $convertedAmount);
+        $this->assertEquals(new Money(12, Currency::USD()), $convertedAmount);
     }
 
     public function test_convert_eur_to_eur_returns_same_value()
@@ -34,7 +34,7 @@ class BankTest extends TestCase
         $convertedAmount = $this->bank->convert(new Money(10, Currency::EUR()), Currency::EUR());
 
         // Assert
-        $this->assertEquals(10, $convertedAmount);
+        $this->assertEquals(new Money(10, Currency::EUR()), $convertedAmount);
     }
 
     public function test_convert_throws_exception_on_missing_exchange_rate()
@@ -53,13 +53,13 @@ class BankTest extends TestCase
         $convertedAmount = $this->bank->convert(new Money(10, Currency::EUR()), Currency::USD());
 
         // Assert
-        $this->assertEquals(12, $convertedAmount);
+        $this->assertEquals(new Money(12, Currency::USD()), $convertedAmount);
 
         // Act
-        $this->bank->addEchangeRate(Currency::EUR(), Currency::USD(), 1.3);
-        $convertedAmount = $this->bank->convert(new Money(10, Currency::EUR()), Currency::USD());
+        $convertedAmount = $this->bank->addEchangeRate(Currency::EUR(), Currency::USD(), 1.3)
+            ->convert(new Money(10, Currency::EUR()), Currency::USD());
 
         // Assert
-        $this->assertEquals(13, $convertedAmount);
+        $this->assertEquals(new Money(13, Currency::USD()), $convertedAmount);
     }
 }
