@@ -12,10 +12,19 @@ permissions:
 jobs:
   test:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./php
+        
     steps:
-      - run: composer install
-      - run: infection --threads=4
-      - working-directory: ./php
+      - name: Checkout
+        uses: actions/checkout@v2
+        
+      - name: composer install  
+        run: composer install
+        
+      - name: phpunit
+        run: php vendor/bin/phpunit
 
 #     runs-on: ubuntu-latest
 
