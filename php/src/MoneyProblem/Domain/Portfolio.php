@@ -18,7 +18,7 @@ class Portfolio
     {
         $total = 0;
         foreach ($this->monies as $from => $mount) {
-            $total += $bank->convert($mount, Currency::from($from), $currency);
+            $total += $bank->convert(new Money($mount, Currency::from($from)), $currency);
         }
         return $total;
     }

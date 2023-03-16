@@ -28,18 +28,15 @@ class Bank
         $this->exchangeRates[($from . '->' . $to)] = $changeRate;
     }
 
-    /**
-     * @throws MissingExchangeRateException
-     */
-    public function convert(float $amount, Currency $from, Currency $to): float
+    public function convert(Money $money, Currency $to): float
     {
-        if (!$this->canConvert($from, $to)) {
-            throw new MissingExchangeRateException($from, $to);
+        if (!$this->canConvert($money->getCurrency(), $to)) {
+            throw new MissingExchangeRateException($money->getCurrency(), $to);
         }
 
-        return $from == $to
-            ? $amount
-            : $amount * $this->exchangeRates[($from . '->' . $to)];
+        return $money->getCurrency() == $to
+            ? $money->getAmount()
+            : (new Money($money->getAmount() * $this->exchangeRates[($money->getCurrency() . '->' . $to)], $to))->getAmount();
     }
 
     private function canConvert(Currency $from, Currency $to): bool
