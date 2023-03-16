@@ -9,12 +9,10 @@ class Bank
 {
     private array $exchangeRates = [];
 
-
     public function __construct(array $exchangeRates = [])
     {
         $this->exchangeRates = $exchangeRates;
     }
-
 
     public static function create(Currency $from, Currency $to, float $rate): Bank
     {

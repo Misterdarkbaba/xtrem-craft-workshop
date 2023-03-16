@@ -4,33 +4,22 @@ namespace MoneyProblem\Domain;
 
 class Portfolio
 {
-
-    private array $portfolio;
-
-    public function __construct()
-    {
-        $this->portfolio = [];
-    }
+    private array $monies = [];
 
     public function add(int $value, Currency $currency)
     {
-        if (!key_exists($currency->getValue(), $this->portfolio)) {
-            $this->portfolio[$currency->getValue()] = $value;
-        } else {
-            $this->portfolio[$currency->getValue()] += $value;
+        if (!key_exists($currency->getValue(), $this->monies)) {
+            $this->monies[$currency->getValue()] = 0;
         }
+        $this->monies[$currency->getValue()] += $value;
     }
 
-    public function evaluate(Currency $USD, Bank $create): float
+    public function evaluate(Currency $currency, Bank $bank): float
     {
-        return 17;
-    }
-
-    /**
-     * @return array
-     */
-    public function getPortfolio(): array
-    {
-        return $this->portfolio;
+        $total = 0;
+        foreach ($this->monies as $from => $mount) {
+            $total += $bank->convert($mount, Currency::from($from), $currency);
+        }
+        return $total;
     }
 }
