@@ -60,5 +60,6 @@ class BankTest extends TestCase
 
         // Assert
         $this->assertEquals(13, $convertedAmount);
+        var_dump("test");
     }
 }
