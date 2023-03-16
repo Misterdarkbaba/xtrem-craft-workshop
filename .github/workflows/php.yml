@@ -14,7 +14,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - run: composer install
-      - run: cd php | infection --threads=4
+      - run: infection --threads=4
+      - working-directory: ./php
 
 #     runs-on: ubuntu-latest
 
