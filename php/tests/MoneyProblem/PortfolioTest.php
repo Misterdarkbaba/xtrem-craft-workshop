@@ -2,7 +2,6 @@
 
 namespace Tests\MoneyProblem;
 
-use MoneyProblem\Domain\Bank;
 use MoneyProblem\Domain\Currency;
 use MoneyProblem\Domain\Money;
 use MoneyProblem\Domain\Portfolio;
@@ -18,7 +17,11 @@ class PortfolioTest extends TestCase
         $portfolio->add(new Money(10, Currency::EUR()));
 
         // Act
-        $evaluation = $portfolio->evaluate(Currency::USD(), Bank::create(Currency::EUR(), Currency::USD(), 1.2));
+        $bank = BankBuilder::aBank()
+            ->whithPivotCurrency(Currency::EUR())
+            ->whithExangeRate(1.2, Currency::USD())
+            ->build();
+        $evaluation = $portfolio->evaluate(Currency::USD(), $bank);
 
         // Assert
         $this->assertEquals(17, $evaluation);
@@ -32,7 +35,10 @@ class PortfolioTest extends TestCase
         $portfolio->add(new Money(1100, Currency::KRW()));
 
         // Act
-        $bank = Bank::create(Currency::USD(), Currency::KRW(), 1100);
+        $bank = BankBuilder::aBank()
+            ->whithPivotCurrency(Currency::USD())
+            ->whithExangeRate(1100, Currency::KRW())
+            ->build();
         $evaluation = $portfolio->evaluate(Currency::KRW(), $bank);
 
         // Assert
@@ -44,7 +50,10 @@ class PortfolioTest extends TestCase
         $portfolio = new Portfolio();
 
         // Act
-        $bank = Bank::create(Currency::EUR(), Currency::USD(), 1.2);
+        $bank = BankBuilder::aBank()
+            ->whithPivotCurrency(Currency::EUR())
+            ->whithExangeRate(1.2, Currency::USD())
+            ->build();
         $evaluation = $portfolio->evaluate(Currency::USD(), $bank);
 
         // Assert
