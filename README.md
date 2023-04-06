@@ -1,3 +1,16 @@
+### Groupe
+> - CHABROL Baptiste
+> - LEGRAND Etienne
+> - RAINTEAU Tom
+> - IGLI Anass
+
+### Dossier de prises de notes
+> xtrem-craft-workshop/php/step-by-step
+
+### Langage choisi
+> PHP
+
+
 # Xtrem Craft workshop
 
 This workshop is based on the [Xtrem TDD workshop](https://github.com/les-tontons-crafters/xtrem-tdd-money-kata), 
