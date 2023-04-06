@@ -4,6 +4,7 @@ namespace Tests\MoneyProblem;
 
 use MoneyProblem\Domain\Bank;
 use MoneyProblem\Domain\Currency;
+use MoneyProblem\Domain\Money;
 use MoneyProblem\Domain\Portfolio;
 use PHPUnit\Framework\TestCase;
 
@@ -13,8 +14,8 @@ class PortfolioTest extends TestCase
     {
         // Arrange
         $portfolio = new Portfolio();
-        $portfolio->add(5, Currency::USD());
-        $portfolio->add(10, Currency::EUR());
+        $portfolio->add(new Money(5, Currency::USD()));
+        $portfolio->add(new Money(10, Currency::EUR()));
 
         // Act
         $evaluation = $portfolio->evaluate(Currency::USD(), Bank::create(Currency::EUR(), Currency::USD(), 1.2));
@@ -27,8 +28,8 @@ class PortfolioTest extends TestCase
     {
         // Arrange
         $portfolio = new Portfolio();
-        $portfolio->add(1, Currency::USD());
-        $portfolio->add(1100, Currency::KRW());
+        $portfolio->add(new Money(1, Currency::USD()));
+        $portfolio->add(new Money(1100, Currency::KRW()));
 
         // Act
         $bank = Bank::create(Currency::USD(), Currency::KRW(), 1100);
@@ -36,13 +37,6 @@ class PortfolioTest extends TestCase
 
         // Assert
         $this->assertEquals(2200, $evaluation);
-
-        // Act
-//        $bank->addEchangeRate(Currency::KRW(), Currency::USD(), 0.0009);
-//        $evaluation = $portfolio->evaluate(Currency::USD(), $bank);
-//
-//        // Assert
-//        $this->assertEquals(1.98, $evaluation);
     }
 
     public function test_portfolio_empty_should_return_0(){

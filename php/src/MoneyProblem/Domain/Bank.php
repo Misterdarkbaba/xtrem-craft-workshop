@@ -9,7 +9,7 @@ class Bank
 {
     private array $exchangeRates = [];
 
-    public function __construct(array $exchangeRates = [])
+    private function __construct(array $exchangeRates = [])
     {
         $this->exchangeRates = $exchangeRates;
     }
@@ -17,29 +17,25 @@ class Bank
     public static function create(Currency $from, Currency $to, float $rate): Bank
     {
         $bank = new Bank([]);
-        $bank->addEchangeRate($from, $to, $rate);
-
-        return $bank;
+        return $bank->addEchangeRate($from, $to, $rate);
     }
 
-
-    public function addEchangeRate(Currency $from, Currency $to, float $changeRate): void
+    public function addEchangeRate(Currency $from, Currency $to, float $changeRate): Bank
     {
-        $this->exchangeRates[($from . '->' . $to)] = $changeRate;
+        $exchangeRates = array_merge($this->exchangeRates, [($from . '->' . $to) => $changeRate]);
+
+        return new Bank($exchangeRates);
     }
 
-    /**
-     * @throws MissingExchangeRateException
-     */
-    public function convert(float $amount, Currency $from, Currency $to): float
+    public function convert(Money $money, Currency $to): Money
     {
-        if (!$this->canConvert($from, $to)) {
-            throw new MissingExchangeRateException($from, $to);
+        if (!$this->canConvert($money->getCurrency(), $to)) {
+            throw new MissingExchangeRateException($money->getCurrency(), $to);
         }
 
-        return $from == $to
-            ? $amount
-            : $amount * $this->exchangeRates[($from . '->' . $to)];
+        return $money->getCurrency() == $to
+            ? $money
+            : (new Money($money->getAmount() * $this->exchangeRates[($money->getCurrency() . '->' . $to)], $to));
     }
 
     private function canConvert(Currency $from, Currency $to): bool
