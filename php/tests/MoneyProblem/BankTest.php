@@ -15,7 +15,10 @@ class BankTest extends TestCase
     protected function setUp():void
     {
         parent::setUp();
-        $this->bank = Bank::create(Currency::EUR(), Currency::USD(), 1.2);
+        $this->bank = BankBuilder::aBank()
+            ->withPivotCurrency(Currency::EUR())
+            ->withExchangeRate(1.2, Currency::USD())
+            ->build();
     }
 
 

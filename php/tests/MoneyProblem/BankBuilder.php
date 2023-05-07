@@ -22,13 +22,13 @@ class BankBuilder
         return new BankBuilder();
     }
 
-    public function whithPivotCurrency(Currency $currency): self
+    public function withPivotCurrency(Currency $currency): self
     {
         $this->currency = $currency;
         return $this;
     }
 
-    public function whithExangeRate(float $rate, Currency $to): self
+    public function withExchangeRate(float $rate, Currency $to): self
     {
         $this->exchangeRates[$to->getValue()] = $rate;
         return $this;
