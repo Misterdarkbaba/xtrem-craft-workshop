@@ -36,10 +36,10 @@ class BankBuilder
 
     public function build(): Bank
     {
-        $bank = Bank::create($this->currency, $this->currency, 1.0);
+        $bank = Bank::create($this->currency, $this->currency, 1.0, $this->currency);
 
         foreach ($this->exchangeRates as $to => $rate) {
-            $bank = $bank->addEchangeRate($this->currency, Currency::from($to), $rate);
+            $bank = $bank->addExchangeRate($this->currency, Currency::from($to), $rate);
         }
         return $bank;
     }
