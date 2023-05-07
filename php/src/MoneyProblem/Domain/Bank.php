@@ -24,11 +24,14 @@ class Bank
 
     public function addExchangeRate(Currency $from, Currency $to, float $changeRate): Bank
     {
-        if (array_key_exists($from . '->' . $to, $this->exchangeRates)) {
-            if($this->exchangeRates[($from . '->' . $to)] === $changeRate){
-                throw new \InvalidArgumentException('An Exchange Rate can not be added for the Pivot Currency');
-            }
+        if ($from === $to && $from === $this->pivotCurrency && array_key_exists($from . '->' . $to, $this->exchangeRates)) {
+            throw new \InvalidArgumentException('An Exchange Rate can not be added for the Pivot Currency');
         }
+//        if (array_key_exists($from . '->' . $to, $this->exchangeRates)) {
+//            if($this->exchangeRates[($from . '->' . $to)] === $changeRate){
+//                throw new \InvalidArgumentException('An Exchange Rate can not be added for the Pivot Currency');
+//            }
+//        }
         if ($changeRate <= 0) {
             throw new \InvalidArgumentException('Exchange Rate should be greater than 0');
         }
@@ -80,16 +83,17 @@ class Bank
         if ($from == $to || array_key_exists($from . '->' . $to, $this->exchangeRates)) {
             return true;
         }
-//        if(array_key_exists($this->pivotCurrency->getValue() . '->' . $from->getValue(), $this->exchangeRates)
-//            && array_key_exists(Currency::EUR()->getValue() . '->' . $to->getValue(), $this->exchangeRates)){
-//
-//            // KRW -> USD = (Taux Pivot/KRW) x (Taux Pivot/USD)
-//            $changeRateFrom = $this->exchangeRates[(Currency::EUR()->getValue() . '->' . $from->getValue())];
-//            $changeRateTo = $this->exchangeRates[(Currency::EUR()->getValue() . '->' . $to->getValue())];
-//            $changeRate = $changeRateFrom * $changeRateTo;
-//            $this->addExchangeRate($from, $to, $changeRate);
-//            return true;
-//        }
+        if(array_key_exists($this->pivotCurrency . '->' . $from, $this->exchangeRates)
+            && array_key_exists($this->pivotCurrency . '->' . $to, $this->exchangeRates)){
+
+            // KRW -> USD = (Taux Pivot/KRW) x (Taux Pivot/USD)
+            $fromExchangeRate = $this->exchangeRates[$this->pivotCurrency . '->' . $from];
+            $toExchangeRate = $this->exchangeRates[$this->pivotCurrency . '->' . $to];
+            $exchangeRateFromToTo = $fromExchangeRate / $toExchangeRate;
+            $bank = $this->addExchangeRate($from, $to, $exchangeRateFromToTo);
+
+            return true;
+        }
         return false;
     }
 
@@ -97,27 +101,9 @@ class Bank
     {
         return $this->pivotCurrency;
     }
-    public function setPivotCurrency(Currency $pivotCurrency): void
-    {
-        $this->pivotCurrency = $pivotCurrency;
-    }
 
     public function getExchangeRates(): array
     {
         return $this->exchangeRates;
     }
-
-    /*private function updateExchangeRates(): void
-    {
-        if ($this->pivotCurrency !== null) {
-            foreach ($this->exchangeRates as $key => $exchangeRate) {
-                [$from, $to] = explode('->', $key);
-                if ($from !== $this->pivotCurrency->getValue() && $to !== $this->pivotCurrency->getValue()) {
-                    $fromToPivot = $this->exchangeRates[$from . '->' . $this->pivotCurrency->getValue()];
-                    $pivotToTo = $this->exchangeRates[$this->pivotCurrency->getValue() . '->' . $to];
-                    $this->exchangeRates[$key] = $exchangeRate / $fromToPivot * $pivotToTo;
-                }
-            }
-        }
-    }*/
 }
