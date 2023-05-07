@@ -18,8 +18,8 @@ class PortfolioTest extends TestCase
 
         // Act
         $bank = BankBuilder::aBank()
-            ->whithPivotCurrency(Currency::EUR())
-            ->whithExangeRate(1.2, Currency::USD())
+            ->withPivotCurrency(Currency::EUR())
+            ->withExchangeRate(1.2, Currency::USD())
             ->build();
         $evaluation = $portfolio->evaluate(Currency::USD(), $bank);
 
@@ -36,8 +36,8 @@ class PortfolioTest extends TestCase
 
         // Act
         $bank = BankBuilder::aBank()
-            ->whithPivotCurrency(Currency::USD())
-            ->whithExangeRate(1100, Currency::KRW())
+            ->withPivotCurrency(Currency::USD())
+            ->withExchangeRate(1100, Currency::KRW())
             ->build();
         $evaluation = $portfolio->evaluate(Currency::KRW(), $bank);
 
@@ -51,8 +51,8 @@ class PortfolioTest extends TestCase
 
         // Act
         $bank = BankBuilder::aBank()
-            ->whithPivotCurrency(Currency::EUR())
-            ->whithExangeRate(1.2, Currency::USD())
+            ->withPivotCurrency(Currency::EUR())
+            ->withExchangeRate(1.2, Currency::USD())
             ->build();
         $evaluation = $portfolio->evaluate(Currency::USD(), $bank);
 
